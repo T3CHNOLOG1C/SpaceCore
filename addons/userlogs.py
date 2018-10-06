@@ -1,7 +1,5 @@
-#!/usr/bin/env python3
-import time
 import discord
-from discord.ext import commands
+from botconfig import enableJoinLogs, enableLeaveLogs
 
 class Userlogs:
     """
@@ -23,20 +21,18 @@ class Userlogs:
             logmsg = "✏️ Username change: {}#{} ({}) --> {}#{}".format(before.name, before.discriminator, after.mention, after.name, after.discriminator,)
             await logchannel.send(logmsg)
 
-    if self.bot.EnableJoinLogs == True:
+    if enableJoinLogs == True:
         async def on_member_join(self, member):
             user = member
-            geturl = await self.bot.get_user_info(user.id)
             emb = discord.Embed(title="Member Joined", colour=discord.Colour.green())
             emb.add_field(name="Member:", value=member.name, inline=True)
             emb.set_thumbnail(url=user.avatar_url)
             logchannel = self.bot.memberlogs_channel
             await logchannel.send("", embed=emb)
         
-    if self.bot.EnableLeaveLogs == True:
+    if enableLeaveLogs == True:
         async def on_member_remove(self, member):
             user = member
-            geturl = await self.bot.get_user_info(user.id)
             emb = discord.Embed(title="Member Left", colour=discord.Colour.green())
             emb.add_field(name="Member:", value=member.name, inline=True)
             emb.set_thumbnail(url=user.avatar_url)
