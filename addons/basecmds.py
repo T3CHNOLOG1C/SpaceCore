@@ -1,6 +1,6 @@
 import datetime
 from discord.ext import commands
-
+from addons.utils import checks
 
 class Basecmds:
     """
@@ -11,32 +11,31 @@ class Basecmds:
         self.bot = bot
         print("{} addon loaded.".format(self.__class__.__name__))
 
-    @commands.command(hidden=True)
+    @commands.command()
+    @checks.is_staff()
     async def unload(self, ctx, addon: str):
         """Unloads an addon."""
-        usr = ctx.message.author
-        if self.bot.admin_role in usr.roles or self.bot.owner_role in usr.roles:
-            try:
-                addon = "addons." + addon
-                self.bot.unload_extension(addon)
-                await ctx.send('✅ Addon unloaded.')
-            except Exception as e:
-                await ctx.send('💢 Error trying to unload the addon:\n```\n{}: {}\n```'.format(type(e).__name__, e))
+        try:
+            addon = "addons." + addon
+            self.bot.unload_extension(addon)
+            await ctx.send('✅ Addon unloaded.')
+        except Exception as e:
+            await ctx.send('💢 Error trying to unload the addon:\n```\n{}: {}\n```'.format(type(e).__name__, e))
 
-    @commands.command(name='reload', aliases=['load'], hidden=True)
-    async def reload(self, ctx, addon: str):
+    @commands.command(aliases=['reload'])
+    @checks.is_staff()
+    async def load(self, ctx, addon: str):
         """(Re)loads an addon."""
-        usr = ctx.message.author
-        if self.bot.admin_role in usr.roles or self.bot.owner_role in usr.roles:
-            try:
-                addon = "addons." + addon
-                self.bot.unload_extension(addon)
-                self.bot.load_extension(addon)
-                await ctx.send('✅ Addon reloaded.')
-            except Exception as e:
-                await ctx.send('💢 Failed!\n```\n{}: {}\n```'.format(type(e).__name__, e))
+        try:
+            addon = "addons." + addon
+            self.bot.unload_extension(addon)
+            self.bot.load_extension(addon)
+            await ctx.send('✅ Addon reloaded.')
+        except Exception as e:
+            await ctx.send('💢 Failed!\n```\n{}: {}\n```'.format(type(e).__name__, e))
 
-    @commands.command(pass_context=True)
+    @commands.command()
+    @checks.is_staff()
     async def ping(self, ctx):
         """Pong!"""
         mtime = ctx.message.created_at
