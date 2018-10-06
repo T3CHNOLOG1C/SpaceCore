@@ -1,0 +1,66 @@
+################################
+### Space Core Configuration ###
+############# v1.0 #############
+################################
+
+# Bot authentication token
+
+token = ''
+
+# Prefixes used to execute bot commands, treated as a list
+
+prefixes = [
+    '!',
+]
+
+# Description of the bot
+
+description = 'A general purpose discord bot!'
+
+# Set to "True" if you would like the bot to send the help message via DMs
+
+helpDM = True
+
+# Set to true if your server uses a buffer channel / approval system
+# In addition, you will need to specify a role name for the approved role
+
+approvalSystemEnabled = True
+approvedRole = ""
+
+# Set each the respective variable to True or False to enable or disable join and leave logs.
+enableJoinLogs = True
+enableLeaveLogs = True
+
+# Role for the guild owner(s)
+
+OwnerRole = ""
+
+# Role for the guild administrator(s) 
+
+AdminRole = ""
+
+# Role for the guild moderator(s)
+
+ModRole = ""
+
+# List of addons to load
+
+addons = [
+	'addons.basecmds',
+	'addons.memberlogs',
+]
+
+
+# Name of the channel where changes to users should be logged
+memberlogs_channel = ""
+
+# Name of the channel where deleted messages should be logged
+messagelogs_channel = ""
+
+# IDs of channels that are ignored by message logging
+ignored_chans = [
+    000000000000000000, # botdev
+	000000000000000000, # bot-dm
+	000000000000000000, # staff
+	000000000000000000, # nsfw
+]
