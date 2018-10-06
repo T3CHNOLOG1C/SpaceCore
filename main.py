@@ -48,5 +48,5 @@ async def on_ready():
         bot.user.name, guild.name))
 
 
-
-bot.run(token)
+if __name__ == "__main__":
+    bot.run(token)
