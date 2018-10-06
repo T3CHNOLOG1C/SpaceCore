@@ -48,30 +48,5 @@ async def on_ready():
         bot.user.name, guild.name))
 
 
-@bot.command(hidden=True)
-async def unload(ctx, addon: str):
-    """Unloads an addon."""
-    usr = ctx.message.author
-    if bot.admin_role in usr.roles or bot.owner_role in usr.roles:
-        try:
-            addon = "addons." + addon
-            bot.unload_extension(addon)
-            await ctx.send('✅ Addon unloaded.')
-        except Exception as e:
-            await ctx.send('💢 Error trying to unload the addon:\n```\n{}: {}\n```'.format(type(e).__name__, e))
-
-
-@bot.command(name='reload', aliases=['load'], hidden=True)
-async def reload(ctx, addon: str):
-    """(Re)loads an addon."""
-    usr = ctx.message.author
-    if bot.admin_role in usr.roles or bot.owner_role in usr.roles:
-        try:
-            addon = "addons." + addon
-            bot.unload_extension(addon)
-            bot.load_extension(addon)
-            await ctx.send('✅ Addon reloaded.')
-        except Exception as e:
-            await ctx.send('💢 Failed!\n```\n{}: {}\n```'.format(type(e).__name__, e))
 
 bot.run(token)
