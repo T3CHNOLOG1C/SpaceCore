@@ -9,7 +9,6 @@ class Userlogs:
 
     def __init__(self, bot):
         self.bot = bot
-        print("{} addon loaded.".format(self.__class__.__name__))
 
     async def on_member_update(self, before, after):
         # Log nickname changes to the dedicated channel.

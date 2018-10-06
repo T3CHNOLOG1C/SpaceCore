@@ -2,6 +2,7 @@ import datetime
 from discord.ext import commands
 from addons.utils import checks
 
+
 class Basecmds:
     """
     Base commands
@@ -9,7 +10,6 @@ class Basecmds:
 
     def __init__(self, bot):
         self.bot = bot
-        print("{} addon loaded.".format(self.__class__.__name__))
 
     @commands.command()
     @checks.is_staff()
@@ -35,7 +35,6 @@ class Basecmds:
             await ctx.send('💢 Failed!\n```\n{}: {}\n```'.format(type(e).__name__, e))
 
     @commands.command()
-    @checks.is_staff()
     async def ping(self, ctx):
         """Pong!"""
         mtime = ctx.message.created_at
