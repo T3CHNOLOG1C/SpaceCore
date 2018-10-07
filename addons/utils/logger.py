@@ -2,7 +2,7 @@ from datetime import date, datetime
 from sys import _getframe
 from asyncio import ensure_future
 from discord import Embed
-
+from addons.utils.formatting import escape
 
 class Logger:
 
@@ -13,16 +13,18 @@ class Logger:
         self.writeformat = writeformat
 
     def write(self, content, type, function):
+        time = datetime.now().strftime(self.strftime)
         with open("logs/{}.log".format(str(date.today())), "a") as file:
-            file.write()
+            file.write(self.writeformat.format(time=time, type=type,
+                                               name=self.name, function=function, content=content))
 
     def send(self, content, type, function):
         async def wrapper(self, content, type, function):
             emb = Embed()
-            emb.add_field(name="Name", value=self.name)
+            emb.add_field(name="Name", value=escape(self.name))
             emb.add_field(name="Type", value=type)
-            emb.add_field(name="Function", value=function)
-            emb.add_field(name="Message", value=content)
+            emb.add_field(name="Function", value=escape(function))
+            emb.add_field(name="Message", value=escape(content))
             await self.channel.send(embed=emb)
         ensure_future(wrapper(self, content, type, function))
 
