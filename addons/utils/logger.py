@@ -22,13 +22,13 @@ class Logger:
     def send(self, content, type, function, color="#ffffff"):
         async def wrapper(self, content, type, function):
             emb = Embed(color=color)
-            emb.add_field(name="Type", value=type)
-            emb.add_field(name="Name", value=escape(self.name))
-            emb.add_field(name="Function", value=escape(function))
-            emb.add_field(name="Message", value=escape(content), inline=True)
+            (emb.add_field(name="Type", value=type)
+                .add_field(name="Name", value=escape(self.name))
+                .add_field(name="Function", value=escape(function))
+                .add_field(name="Message", value=escape(content), inline=True))
             try:
                 await self.channel.send(embed=emb)
-            except:
+            except Forbidden:
                 await self.channel.send("{type} {name} {function}: {content}\n".format(type=type, name=self.name, function=function, content=content))
         ensure_future(wrapper(self, content, type, function))
 
