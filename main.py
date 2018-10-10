@@ -13,10 +13,18 @@ chdir(path)
 
 # import config
 from botconfig import (token, prefixes, description, helpDM, OwnerRole, AdminRole, approvalSystemEnabled,
-                       approvedRole, addons, messagelogs_channel, memberlogs_channel, modlogs_channel)
+                       approvedRole, addons, messagelogs_channel, memberlogs_channel, modlogs_channel, ignored_people)
 
 bot = commands.Bot(command_prefix=prefixes,
                    description=description, max_messages=10000, pm_help=helpDM)
+
+
+@bot.check_once
+def blacklist(ctx):
+    if ctx.message.author.id in ignored_people:
+        return False
+
+    return True
 
 
 @bot.event
