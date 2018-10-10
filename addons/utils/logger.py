@@ -4,12 +4,14 @@ from asyncio import ensure_future
 from discord import Embed, Color
 from discord.errors import Forbidden
 from addons.utils.formatting import escape
-
+from discord.channel import TextChannel
 
 class Logger:
 
     def __init__(self, name, channel=None, *, stftime="%d/%m/%Y %H:%M"):
         self.name = name
+        if channel and channel.__class__ != TextChannel:
+            raise TypeError("channel argument is not of type TextChannel")
         self.channel = channel
         self.strftime = stftime
 
