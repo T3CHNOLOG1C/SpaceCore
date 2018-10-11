@@ -36,10 +36,15 @@ class Moderation:
         try:
             await member.send(msg)
         except Forbidden:
-            await ctx.send("User had DMs disabled")
+            if not member.bot:
+                await ctx.send("User had DMs disabled")
 
-        await member.kick()
-
+        try:
+            await member.kick()
+        except Forbidden:
+            await ctx.send("Unable to kick Member")
+            return
+ 
         await ctx.send("{} has been kicked".format())
 
     @commands.has_permissions(ban_members=True)
@@ -67,9 +72,14 @@ class Moderation:
         try:
             await member.send(msg)
         except Forbidden:
-            await ctx.send("User had DMs disabled")
+            if not member.bot:
+                await ctx.send("User had DMs disabled")
 
-        await member.ban(delete_message_days=0)
+        try:
+            await member.ban(delete_message_days=0)
+        except Forbidden:
+            await ctx.send("Unable to ban Member")
+            return
 
         await ctx.send("{} has been banned".format())
 
