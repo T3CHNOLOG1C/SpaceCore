@@ -1,6 +1,12 @@
 import datetime
 from discord.ext import commands
+from os import execl
+from sys import executable, argv
+from asyncio import sleep
+
+from addons.utils.logger import Logger
 from addons.utils import checks
+
 
 class Basecmds:
     """
@@ -9,7 +15,7 @@ class Basecmds:
 
     def __init__(self, bot):
         self.bot = bot
-        print("{} addon loaded.".format(self.__class__.__name__))
+        self.logger = Logger(__name__, bot.modlogs_channel)
 
     @commands.command()
     @checks.is_staff()
@@ -35,7 +41,6 @@ class Basecmds:
             await ctx.send('💢 Failed!\n```\n{}: {}\n```'.format(type(e).__name__, e))
 
     @commands.command()
-    @checks.is_staff()
     async def ping(self, ctx):
         """Pong!"""
         mtime = ctx.message.created_at
@@ -43,6 +48,29 @@ class Basecmds:
         latency = currtime - mtime
         ptime = str(latency.microseconds / 1000.0)
         return await ctx.send(":ping_pong:! Pong! Response time: {} ms".format(ptime))
+
+    @commands.command(name="exit", aliases=["shutdown"])
+    @checks.is_owner()
+    async def _exit(self, ctx):
+        """Shutdown the bot"""
+
+        await ctx.send("Shutting down")
+        self.logger.warn(
+            "Bot shutdown via command by {}".format(ctx.message.author))
+
+        await self.bot.logout()
+
+    @commands.command()
+    @checks.is_staff()
+    async def restart(self, ctx):
+        """Restart the bot"""
+
+        await ctx.send("Restarting...")
+        self.logger.info(
+            "Bot restart via command by {}".format(ctx.message.author))
+        await sleep(1)  # process is replaced too for logger
+
+        execl(executable, 'python', "main.py", *argv[1:])
 
 
 def setup(bot):

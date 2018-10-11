@@ -57,10 +57,17 @@ memberlogs_channel = ""
 # Name of the channel where deleted messages should be logged
 messagelogs_channel = ""
 
+# Name of channel where bot activity is logged
+modlogs_channel = ""
+
 # IDs of channels that are ignored by message logging
 ignored_chans = [
     000000000000000000, # botdev
 	000000000000000000, # bot-dm
 	000000000000000000, # staff
 	000000000000000000, # nsfw
+]
+
+# IDs of people that the bot ignores
+ignored_people = [
 ]

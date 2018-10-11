@@ -1,4 +1,5 @@
 from discord import Embed, Colour
+
 from botconfig import enableJoinLogs, enableLeaveLogs
 
 
@@ -9,41 +10,45 @@ class Memberlogs:
 
     def __init__(self, bot):
         self.bot = bot
-        print("{} addon loaded.".format(self.__class__.__name__))
 
     async def on_member_update(self, before, after):
-        # Log nickname changes to the dedicated channel.
-        logchannel = self.bot.memberlogs_channel
+        # TODO
+        # compare all before and after content
+
         if before.nick != after.nick:
-            logmsg = "✏️ Nickname change: {} ({}) --> {}".format(
+            logmsg = "✏️ Nickname change: {} ({}) --> {}\n".format(
                 before.nick, after.mention, after.nick)
-            await logchannel.send(logmsg)
-        # If the member's nickname didn't change, check if their username
-        # changed.
+
         elif before.name != after.name:
-            logmsg = "✏️ Username change: {}#{} ({}) --> {}#{}".format(
+            logmsg = "✏️ Username change: {}#{} ({}) --> {}#{}\n".format(
                 before.name, before.discriminator, after.mention, after.name, after.discriminator,)
-            await logchannel.send(logmsg)
+
+        elif before.avatar_url != after.avatar_url:
+            logmsg = "✏️ Avatar change: {} ({}) --> {}\n"
+
+        else:
+            logmsg = False  # User changed but nothing condition exists
+
+        if logmsg:
+            await self.bot.memberlogs_channel.send(logmsg)
 
     if enableJoinLogs == True:
         async def on_member_join(self, member):
-            user = member
             emb = Embed(title="Member Joined",
                         colour=Colour.green())
             emb.add_field(name="Member:", value=member.name, inline=True)
-            emb.set_thumbnail(url=user.avatar_url)
-            logchannel = self.bot.memberlogs_channel
-            await logchannel.send("", embed=emb)
+            emb.set_thumbnail(url=member.avatar_url)
+
+            await self.bot.memberlogs_channel.send("", embed=emb)
 
     if enableLeaveLogs == True:
         async def on_member_remove(self, member):
-            user = member
             emb = Embed(title="Member Left",
                         colour=Colour.green())
             emb.add_field(name="Member:", value=member.name, inline=True)
-            emb.set_thumbnail(url=user.avatar_url)
-            logchannel = self.bot.memberlogs_channel
-            await logchannel.send("", embed=emb)
+            emb.set_thumbnail(url=member.avatar_url)
+
+            await self.bot.memberlogs_channel.send("", embed=emb)
 
 
 def setup(bot):

@@ -1,18 +1,30 @@
 #!/usr/bin/env python3.6
-import os
+from traceback import format_exception
+from os.path import dirname, realpath
+from os import chdir
 import discord
 from discord.ext import commands
 
+from addons.utils.logger import Logger
+
 # Change to script's directory
-path = os.path.dirname(os.path.realpath(__file__))
-os.chdir(path)
+path = dirname(realpath(__file__))
+chdir(path)
 
 # import config
-from botconfig import (token, prefixes, description, helpDM, OwnerRole, AdminRole, approvalSystem,
-                       approvedRole, addons, message_logs_channel, mod_logs_channel, member_logs_channel)
+from botconfig import (token, prefixes, description, helpDM, OwnerRole, AdminRole, approvalSystemEnabled,
+                       approvedRole, addons, messagelogs_channel, memberlogs_channel, modlogs_channel, ignored_people)
 
 bot = commands.Bot(command_prefix=prefixes,
                    description=description, max_messages=10000, pm_help=helpDM)
+
+
+@bot.check_once
+def blacklist(ctx):
+    if ctx.message.author.id in ignored_people:
+        return False
+
+    return True
 
 
 @bot.event
@@ -26,27 +38,30 @@ async def on_ready():
     bot.owner_role = discord.utils.get(guild.roles, name=OwnerRole)
     bot.admin_role = discord.utils.get(guild.roles, name=AdminRole)
 
-    if approvalSystem == True:
+    if approvalSystemEnabled == True:
         bot.approved_role = discord.utils.get(guild.roles, name=approvedRole)
 
     bot.messagelogs_channel = discord.utils.get(
-        guild.channels, name=message_logs_channel)
-    bot.modlogs_channel = discord.utils.get(
-        guild.channels, name=mod_logs_channel)
+        guild.channels, name=messagelogs_channel)
     bot.memberlogs_channel = discord.utils.get(
-        guild.channels, name=member_logs_channel)
+        guild.channels, name=memberlogs_channel)
+    bot.modlogs_channel = discord.utils.get(
+        guild.channels, name=modlogs_channel)
+
+    # Setup Logger
+
+    logger = Logger(__name__, bot.modlogs_channel)
 
     # Notify user if an addon fails to load.
     for addon in addons:
         try:
             bot.load_extension(addon)
         except Exception as e:
-            print("Failed to load {} :\n{} : {}".format(
-                addon, type(e).__name__, e))
+            logger.warn("Failed to load {}:\n{}".format(addon, "".join(
+                format_exception(type(e), e, e.__traceback__))))
 
     print("Client logged in as {}, in the following guild : {}".format(
         bot.user.name, guild.name))
-
 
 if __name__ == "__main__":
     bot.run(token)
