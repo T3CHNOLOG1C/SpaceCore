@@ -42,7 +42,7 @@ class Logger:
     def warn(self, content):
         type = "WARNING"
         function = _getframe(1).f_code.co_name
-        print(content)
+        print("[{function}] {content}".format(function=function, content=content))
         self.write(content, type, function)
         if self.channel:
             ensure_future(self.send(content, type, function, Color.red()))
