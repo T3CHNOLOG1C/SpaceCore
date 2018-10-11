@@ -2,6 +2,7 @@ import datetime
 from discord.ext import commands
 from os import execl
 from sys import executable, argv
+from asyncio import sleep
 
 from addons.utils.logger import Logger
 from addons.utils import checks
@@ -56,6 +57,7 @@ class Basecmds:
         await ctx.send("Shutting down")
         self.logger.warn(
             "Bot shutdown via command by {}".format(ctx.message.author))
+
         await self.bot.logout()
 
     @commands.command()
@@ -66,6 +68,8 @@ class Basecmds:
         await ctx.send("Restarting...")
         self.logger.info(
             "Bot restart via command by {}".format(ctx.message.author))
+        await sleep(1)  # process is replaced too for logger
+
         execl(executable, 'python', "main.py", *argv[1:])
 
 
