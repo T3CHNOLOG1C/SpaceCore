@@ -3,11 +3,11 @@ from json import load, dump
 
 class Config:
 
-    def __init__(self, filename, keys: list = []):
+    def __init__(self, filename, default_values: list = {}):
         self.__filename__ = filename
 
-        for key in keys:
-            self.__dict__[key] = None
+        for key, value in default_values.items():
+            self.__dict__[key] = value
 
         try:
             with open("data/{}.json".format(filename)) as file:
