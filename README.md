@@ -1,2 +1,2 @@
 # SpaceCore
-A modular discord bot written in Python
+A heavily WIP modular discord bot written in Python
