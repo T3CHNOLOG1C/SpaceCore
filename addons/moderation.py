@@ -44,7 +44,7 @@ class Moderation:
         except Forbidden:
             await ctx.send("Unable to kick Member")
             return
- 
+
         await ctx.send("{} has been kicked".format(member.name))
 
     @commands.has_permissions(ban_members=True)
