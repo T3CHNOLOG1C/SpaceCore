@@ -43,13 +43,22 @@ AdminRole = ""
 
 ModRole = ""
 
+# Role used on muted people
+
+MuteRole = ""
+
 # List of addons to load
 
 addons = [
-	'addons.basecmds',
-	'addons.memberlogs',
+    'addons.approval',
+    'addons.basecmds',
+    'addons.lastfm',
+    'addons.lockdown',
+    'addons.memberlogs',
+    'addons.moderation',
+    'addons.mute',
+    'addons.warn',
 ]
-
 
 # Name of the channel where changes to users should be logged
 memberlogs_channel = ""
