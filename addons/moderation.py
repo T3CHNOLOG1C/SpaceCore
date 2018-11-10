@@ -4,6 +4,7 @@ from discord.ext import commands
 
 from addons.utils.logger import Logger
 
+
 class Moderation:
     """
     Moderation commands

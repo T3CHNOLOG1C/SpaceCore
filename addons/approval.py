@@ -53,6 +53,7 @@ class Approval:
         except errors.Forbidden:
             await ctx.send("💢 I dont have permission to do this.")
 
+
 def setup(bot):
     if approvalSystemEnabled:
         bot.add_cog(Approval(bot))

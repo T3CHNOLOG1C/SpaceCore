@@ -27,7 +27,8 @@ helpDM = True
 approvalSystemEnabled = True
 approvedRole = ""
 
-# Set each the respective variable to True or False to enable or disable join and leave logs.
+# Set each the respective variable to True or False to enable or disable
+# join and leave logs.
 enableJoinLogs = True
 enableLeaveLogs = True
 
@@ -35,7 +36,7 @@ enableLeaveLogs = True
 
 OwnerRole = ""
 
-# Role for the guild administrator(s) 
+# Role for the guild administrator(s)
 
 AdminRole = ""
 
@@ -71,10 +72,10 @@ modlogs_channel = ""
 
 # IDs of channels that are ignored by message logging
 ignored_chans = [
-    000000000000000000, # botdev
-	000000000000000000, # bot-dm
-	000000000000000000, # staff
-	000000000000000000, # nsfw
+    000000000000000000,  # botdev
+    000000000000000000,  # bot-dm
+    000000000000000000,  # staff
+    000000000000000000,  # nsfw
 ]
 
 # IDs of people that the bot ignores
