@@ -38,7 +38,7 @@ async def on_ready():
     bot.owner_role = discord.utils.get(guild.roles, name=OwnerRole)
     bot.admin_role = discord.utils.get(guild.roles, name=AdminRole)
 
-    if approvalSystemEnabled == True:
+    if approvalSystemEnabled:
         bot.approved_role = discord.utils.get(guild.roles, name=approvedRole)
 
     bot.messagelogs_channel = discord.utils.get(
@@ -47,8 +47,6 @@ async def on_ready():
         guild.channels, name=memberlogs_channel)
     bot.modlogs_channel = discord.utils.get(
         guild.channels, name=modlogs_channel)
-
-    # Setup Logger
 
     logger = Logger(__name__, bot.modlogs_channel)
 
@@ -60,8 +58,7 @@ async def on_ready():
             logger.warn("Failed to load {}:\n{}".format(addon, "".join(
                 format_exception(type(e), e, e.__traceback__))))
 
-    print("Client logged in as {}, in the following guild : {}".format(
-        bot.user.name, guild.name))
+    print(f"Client logged in as {bot.user.name}, in the following guild : {guild.name}")
 
 if __name__ == "__main__":
     bot.run(token)
