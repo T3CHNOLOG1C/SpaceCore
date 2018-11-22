@@ -12,8 +12,13 @@ path = dirname(realpath(__file__))
 chdir(path)
 
 # import config
-from botconfig import (token, prefixes, description, helpDM, OwnerRole, AdminRole, approvalSystemEnabled,
-                       approvedRole, addons, messagelogs_channel, memberlogs_channel, modlogs_channel, ignored_people)
+try:
+    from botconfig import (token, prefixes, description, helpDM, OwnerRole, AdminRole,
+                           approvalSystemEnabled, approvedRole, addons, messagelogs_channel,
+                           memberlogs_channel, modlogs_channel, ignored_people)
+except ImportError:
+    print("Bot config does not exist.")
+    exit()
 
 bot = commands.Bot(command_prefix=prefixes,
                    description=description, max_messages=10000, pm_help=helpDM)
