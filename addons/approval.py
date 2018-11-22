@@ -1,5 +1,5 @@
 from discord import Member, Colour, Embed, errors
-from botconfig impot approvalSystemEnabled
+from botconfig import approvalSystemEnabled
 from discord.ext import commands
 
 
