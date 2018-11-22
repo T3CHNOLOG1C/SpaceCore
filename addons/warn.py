@@ -44,6 +44,7 @@ class Warn:
 
         await ctx.send("User warned")
 
+        self.config.save()
         self.logger.info(f"{ctx.message.author.name} warned {member.name}")
 
     @commands.command(aliases=["unwarn"])
@@ -72,6 +73,7 @@ class Warn:
 
         await ctx.send("User unwarned")
 
+        self.config.save()
         self.logger.info(f"{ctx.message.author.name} unwarned {member.name}")
 
     @commands.command()
