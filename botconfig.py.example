@@ -25,7 +25,7 @@ helpDM = True
 # In addition, you will need to specify a role name for the approved role
 
 approvalSystemEnabled = True
-approvedRole = ""
+approvedRole = "Approved"
 
 # Set each the respective variable to True or False to enable or disable
 # join and leave logs.
@@ -46,7 +46,7 @@ ModRole = ""
 
 # Role used on muted people
 
-MuteRole = ""
+MuteRole = "Muted"
 
 # List of addons to load
 
@@ -58,6 +58,7 @@ addons = [
     'addons.memberlogs',
     'addons.moderation',
     'addons.mute',
+    'addons.qrgen',
     'addons.warn',
 ]
 
@@ -72,10 +73,6 @@ modlogs_channel = ""
 
 # IDs of channels that are ignored by message logging
 ignored_chans = [
-    000000000000000000,  # botdev
-    000000000000000000,  # bot-dm
-    000000000000000000,  # staff
-    000000000000000000,  # nsfw
 ]
 
 # IDs of people that the bot ignores
