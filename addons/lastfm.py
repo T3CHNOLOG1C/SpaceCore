@@ -15,7 +15,7 @@ class LastFM:
         self.bot = bot
 
         self.logger = Logger(__name__, bot.modlogs_channel)
-        self.config = Config("lastfm", {"users": {}, 'api': {
+        self.config = Config('lastfm', {'users': {}, 'api': {
                              'lastfm': ['', ''], 'librefm': ['', '']}})
 
         self.network = {}
@@ -30,7 +30,7 @@ class LastFM:
 
         return cond1 and cond2
 
-    @commands.group(name="set")
+    @commands.group(name='set')
     async def setservice(self, ctx):
         if ctx.invoked_subcommand is None:
             pages = await self.bot.formatter.format_help_for(ctx, ctx.command)
@@ -43,15 +43,15 @@ class LastFM:
         try:
             self.network['lastfm'].get_user(username).get_now_playing()
             self.config.users[str(ctx.message.author.id)] = [
-                username, "lastfm"]
+                username, 'lastfm']
             self.config.save()
-            await ctx.send(f"Set your LastFM account to {username}")
+            await ctx.send(f'Set your LastFM account to {username}')
         except WSError:
             if self.isnetwork('lastfm'):
-                await ctx.send("User does not exist")
+                await ctx.send('User does not exist')
             else:
-                await ctx.send("Addon has not been properly setup.")
-                self.logger.warn("Key or Secret not setup")
+                await ctx.send('Addon has not been properly setup.')
+                self.logger.warn('Key or Secret not setup')
 
     @setservice.command()
     async def librefm(self, ctx, username):
@@ -59,11 +59,11 @@ class LastFM:
         try:
             self.network['librefm'].get_user(username).get_now_playing()
             self.config.users[str(ctx.message.author.id)] = [
-                username, "librefm"]
+                username, 'librefm']
             self.config.save()
-            await ctx.send(f"Set your LibreFM account to {username}")
+            await ctx.send(f'Set your LibreFM account to {username}')
         except WSError:
-            await ctx.send("User does not exist")
+            await ctx.send('User does not exist')
 
     @commands.command()
     async def np(self, ctx, user: Member=None):
@@ -75,13 +75,13 @@ class LastFM:
                 self.config.users[str(user.id)][0])
             playing = account.get_now_playing()
             if not playing:
-                await ctx.send(f"{user.display_name} is playing nothing")
+                await ctx.send(f'{user.display_name} is playing nothing')
                 return
-            await ctx.send(f"{user.display_name} is playing {playing.artist.name} - {playing.title}")
+            await ctx.send(f'{user.display_name} is playing {playing.artist.name} - {playing.title}')
         except KeyError:
-            await ctx.send(f"You have no account\nPlease use `{ctx.prefix}set` to set one up")
+            await ctx.send(f'You have no account\nPlease use `{ctx.prefix}set` to set one up')
         except WSError:
-            await ctx.send(f"The account under your name is not available anymore.\nPlease use `{ctx.prefix}set` to set one up")
+            await ctx.send(f'The account under your name is not available anymore.\nPlease use `{ctx.prefix}set` to set one up')
 
 
 def setup(bot):
