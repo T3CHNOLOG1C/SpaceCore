@@ -16,18 +16,16 @@ class Memberlogs:
         # compare all before and after content
 
         if before.nick != after.nick:
-            logmsg = "✏️ Nickname change: {} ({}) --> {}\n".format(
-                before.nick, after.mention, after.nick)
+            logmsg = f"✏️ Nickname change: {before.nick} ({after.mention}) --> {after.nick}\n"
 
         elif before.name != after.name:
-            logmsg = "✏️ Username change: {}#{} ({}) --> {}#{}\n".format(
-                before.name, before.discriminator, after.mention, after.name, after.discriminator,)
+            logmsg = f"✏️ Username change: {before.name}#{before.discriminator} ({after.mention}) --> {after.name}#{after.discriminator}\n"
 
         elif before.avatar_url != after.avatar_url:
-            logmsg = "✏️ Avatar change: {} ({}) --> {}\n"
+            logmsg = f"✏️ Avatar change: <{before.avatar_url}> ({after.mention}) --> <{after.avatar_url}>\n"
 
         else:
-            logmsg = False  # User changed but nothing condition exists
+            logmsg = False  # User changed but no condition exists
 
         if logmsg:
             await self.bot.memberlogs_channel.send(logmsg)

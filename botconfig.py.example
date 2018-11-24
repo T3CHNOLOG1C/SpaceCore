@@ -25,9 +25,10 @@ helpDM = True
 # In addition, you will need to specify a role name for the approved role
 
 approvalSystemEnabled = True
-approvedRole = ""
+approvedRole = "Approved"
 
-# Set each the respective variable to True or False to enable or disable join and leave logs.
+# Set each the respective variable to True or False to enable or disable
+# join and leave logs.
 enableJoinLogs = True
 enableLeaveLogs = True
 
@@ -35,7 +36,7 @@ enableLeaveLogs = True
 
 OwnerRole = ""
 
-# Role for the guild administrator(s) 
+# Role for the guild administrator(s)
 
 AdminRole = ""
 
@@ -43,13 +44,23 @@ AdminRole = ""
 
 ModRole = ""
 
+# Role used on muted people
+
+MuteRole = "Muted"
+
 # List of addons to load
 
 addons = [
-	'addons.basecmds',
-	'addons.memberlogs',
+    'addons.approval',
+    'addons.basecmds',
+    'addons.lastfm',
+    'addons.lockdown',
+    'addons.memberlogs',
+    'addons.moderation',
+    'addons.mute',
+    'addons.qrgen',
+    'addons.warn',
 ]
-
 
 # Name of the channel where changes to users should be logged
 memberlogs_channel = ""
@@ -62,10 +73,6 @@ modlogs_channel = ""
 
 # IDs of channels that are ignored by message logging
 ignored_chans = [
-    000000000000000000, # botdev
-	000000000000000000, # bot-dm
-	000000000000000000, # staff
-	000000000000000000, # nsfw
 ]
 
 # IDs of people that the bot ignores

@@ -2,6 +2,8 @@ from discord import Member
 from discord.errors import Forbidden
 from discord.ext import commands
 
+from addons.utils.logger import Logger
+
 
 class Moderation:
     """
@@ -10,6 +12,7 @@ class Moderation:
 
     def __init__(self, bot):
         self.bot = bot
+        self.modlog = Logger(__name__, bot.modlogs_channel)
 
     @commands.has_permissions(kick_members=True)
     @commands.command()
@@ -17,21 +20,27 @@ class Moderation:
         """Kick a member. (Staff Only)"""
         if member == ctx.message.author:
             await ctx.send("You cannot kick yourself")
+            self.modlog.info(f"{ctx.message.author.name} tried kicking themselfs")
             return
 
         elif member == ctx.me:
             await ctx.send("Unable to kick myself")
+            self.modlog.info(f"{ctx.message.author.name} tried kicking {member.name} (Bot)")
             return
 
         elif self.bot.owner_role in member.roles:
             await ctx.send("Unable to kick Owner")
+            self.modlog.info(f"{ctx.message.author.name} tried kicking {member.name} (Missing Permissions)")
+            return
 
         elif self.bot.admin_role in member.roles and not self.bot.owner_role in ctx.message.author.roles:
             await ctx.send("Unable to kick Admin")
+            self.modlog.info(f"{ctx.message.author.name} tried kicking {member.name} (Missing Permissions)")
+            return
 
-        msg = "You have been kicked from {}".format(ctx.guild.name)
+        msg = f"You have been kicked from {ctx.guild.name}"
         if reason:
-            msg += " for the following reason:\n{}".format(reason)
+            msg += f" for the following reason:\n{reason}"
 
         try:
             await member.send(msg)
@@ -45,7 +54,8 @@ class Moderation:
             await ctx.send("Unable to kick Member")
             return
 
-        await ctx.send("{} has been kicked".format(member.name))
+        await ctx.send(f"{member.name} has been kicked")
+        self.modlog.info(f"{ctx.message.author.name} kicked {member.name}")
 
     @commands.has_permissions(ban_members=True)
     @commands.command()
@@ -53,21 +63,27 @@ class Moderation:
         """Ban a member. (Staff Only)"""
         if member == ctx.message.author:
             await ctx.send("You cannot ban yourself")
+            self.modlog.info(f"{ctx.message.author.name} tried kicking themselfs")
             return
 
         elif member == ctx.me:
             await ctx.send("Unable to ban myself")
+            self.modlog.info(f"{ctx.message.author.name} tried kicking {member.name} (Bot)")
             return
 
         elif self.bot.owner_role in member.roles:
             await ctx.send("Unable to ban Owner")
+            self.modlog.info(f"{ctx.message.author.name} tried banning {member.name} (Missing Permissions)")
+            return
 
         elif self.bot.admin_role in member.roles and not self.bot.owner_role in ctx.message.author.roles:
             await ctx.send("Unable to ban Admin")
+            self.modlog.info(f"{ctx.message.author.name} tried banning {member.name} (Missing Permissions)")
+            return
 
-        msg = "You have been banned from {}".format(ctx.guild.name)
+        msg = f"You have been banned from {ctx.guild.name}"
         if reason:
-            msg += " for the following reason:\n{}".format(reason)
+            msg += f" for the following reason:\n{reason}"
 
         try:
             await member.send(msg)
@@ -81,7 +97,8 @@ class Moderation:
             await ctx.send("Unable to ban Member")
             return
 
-        await ctx.send("{} has been banned".format(member.name))
+        await ctx.send(f"{member.name} has been banned")
+        self.modlog.info(f"{ctx.message.author.name} banned {member.name}")
 
 
 def setup(bot):
