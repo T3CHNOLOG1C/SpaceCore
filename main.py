@@ -42,7 +42,7 @@ async def on_ready():
 
     bot.owner_role = discord.utils.get(guild.roles, name=OwnerRole)
     bot.admin_role = discord.utils.get(guild.roles, name=AdminRole)
-    bot.admin_role = discord.utils.get(guild.roles, name=ModRole)
+    bot.mod_role = discord.utils.get(guild.roles, name=ModRole)
 
     if approvalSystemEnabled:
         bot.approved_role = discord.utils.get(guild.roles, name=approvedRole)
