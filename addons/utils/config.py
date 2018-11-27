@@ -11,7 +11,9 @@ class Config:
 
         try:
             with open("data/{}.json".format(filename)) as file:
-                self.__dict__.update(load(file))
+                to_add = load(file)
+                print(f"{filename}: {to_add}")
+                self.__dict__.update(to_add)
         except FileNotFoundError:
             with open("data/{}.json".format(filename), "w") as file:
                 file.write("{}")

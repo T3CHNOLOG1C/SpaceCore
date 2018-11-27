@@ -15,8 +15,8 @@ class Lockdown:
         self.unlockmsg = ":unlock: Channel Unlocked"
         self.modlog = Logger(__name__, bot.modlogs_channel)
 
-    @commands.has_permissions(manage_messages=True, aliases=["lock"])
-    @commands.command()
+    @commands.has_permissions(manage_messages=True)
+    @commands.command(aliases=["lock"])
     async def lockdown(self, ctx, *, reason=""):
         """
         Lock down a channel
@@ -28,8 +28,8 @@ class Lockdown:
             await ctx.send(self.lockmsg)
         self.modlog.info(f"{ctx.message.author.name} locked {ctx.message.channel.name}")
 
-    @commands.has_permissions(manage_messages=True, aliases=["remotelock"])
-    @commands.command()
+    @commands.has_permissions(manage_messages=True)
+    @commands.command(aliases=["rlock"])
     async def remotelockdown(self, ctx, channel: TextChannel, *, reason=""):
         """
         Lock down a channel
@@ -53,7 +53,7 @@ class Lockdown:
         self.modlog.info(f"{ctx.message.author.name} locked {ctx.message.channel.name}")
 
     @commands.has_permissions(manage_messages=True)
-    @commands.command()
+    @commands.command(aliases=["runlock"])
     async def remoteunlock(self, ctx, channel: TextChannel):
         """
         Unlock a channel

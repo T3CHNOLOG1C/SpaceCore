@@ -107,3 +107,4 @@ venv.bak/
 botconfig.py
 .vs/
 logs/
+data/*.*

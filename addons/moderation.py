@@ -63,12 +63,12 @@ class Moderation:
         """Ban a member. (Staff Only)"""
         if member == ctx.message.author:
             await ctx.send("You cannot ban yourself")
-            self.modlog.info(f"{ctx.message.author.name} tried kicking themselfs")
+            self.modlog.info(f"{ctx.message.author.name} tried banning themselfs")
             return
 
         elif member == ctx.me:
             await ctx.send("Unable to ban myself")
-            self.modlog.info(f"{ctx.message.author.name} tried kicking {member.name} (Bot)")
+            self.modlog.info(f"{ctx.message.author.name} tried banning {member.name} (Bot)")
             return
 
         elif self.bot.owner_role in member.roles:

@@ -41,10 +41,15 @@ class Warn:
 
         self.config.users[member.id].append(
             (reason, ctx.message.author.id, currentTime))
-
-        await ctx.send("User warned")
-
         self.config.save()
+
+        try:
+            await member.send(f"You have been warned in {ctx.guild.name} for the following reason: {reason}. This is warning #{len(self.config.users[member.id])}.")
+        except Forbidden:
+            if not member.bot:
+                await ctx.send("User had DMs disabled")
+        await ctx.send(f"🚩 {member} has been warned. This is warning #{len(self.config.users[member.id])}.")
+
         self.logger.info(f"{ctx.message.author.name} warned {member.name}")
 
     @commands.command(aliases=["unwarn"])
@@ -61,7 +66,7 @@ class Warn:
             await ctx.send("Unable to unwarn Admin")
             return
 
-        if not member.id in self.config.users:
+        if member.id not in self.config.users:
             await ctx.send("User has no warns")
             return
 
@@ -78,7 +83,9 @@ class Warn:
 
     @commands.command()
     async def listwarns(self, ctx, member: Member):
-        if not member.id in self.config.users:
+        if not self.config.users.get(member.id):
+            print(self.config.users)
+            print(member.id)
             await ctx.send("User has no warns")
             return
 
@@ -88,7 +95,7 @@ class Warn:
             content = (f"Reason:   {warn[0]}\n"
                        f"Moderator:{warn[1]}\n"
                        f"Time: {warn[2]}")  # TODO convert Unix time to local time
-            embed.addfield(name=nr, value=content)
+            embed.add_field(name=nr, value=content)
 
         await ctx.send("", embed=embed)
 
