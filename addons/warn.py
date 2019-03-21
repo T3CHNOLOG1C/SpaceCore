@@ -185,8 +185,6 @@ class Warn:
             js = load(f)
 
         userid = str(member.id)
-        print(userid)
-        print(js)
         if userid not in js:
             return await ctx.send("No warns found!")
         embed = Embed(color=member.colour)
