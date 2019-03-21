@@ -1,5 +1,5 @@
 # SpaceCore [![Build Status](https://travis-ci.com/T3CHNOLOG1C/SpaceCore.svg?branch=master)](https://travis-ci.com/T3CHNOLOG1C/SpaceCore)
-A modular discord bot written in Python
+A modular discord bot written in Python\n
 **Current Release**: 1.0.0
 
 ## Features:
