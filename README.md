@@ -10,7 +10,7 @@ A modular discord bot written in Python
 - Kick/Ban with logs
 - Mute/Unmute
 - Generate QR Codes for attachments or URLs
-- Warning system (more information below)
+- Warning system (3rd/4th warns kick, 5th bans)
 - Addon system
 
 ## How to use:
