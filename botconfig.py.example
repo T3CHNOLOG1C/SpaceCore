@@ -1,6 +1,6 @@
 ################################
 ### Space Core Configuration ###
-############# v1.0 #############
+############ v1.0.0 ############
 ################################
 
 # Bot authentication token
@@ -53,7 +53,6 @@ MuteRole = "Muted"
 addons = [
     'addons.approval',
     'addons.basecmds',
-    'addons.lastfm',
     'addons.lockdown',
     'addons.memberlogs',
     'addons.moderation',

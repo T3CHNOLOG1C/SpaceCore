@@ -1,6 +1,6 @@
 from discord import Embed, Colour
-
 from botconfig import enableJoinLogs, enableLeaveLogs
+from addons.utils.logger import Logger
 
 
 class Memberlogs:
@@ -10,25 +10,20 @@ class Memberlogs:
 
     def __init__(self, bot):
         self.bot = bot
-
+        self.memberlog = Logger(__name__, bot.memberlogs_channel)
+        
     async def on_member_update(self, before, after):
-        # TODO
-        # compare all before and after content
 
         if before.nick != after.nick:
-            logmsg = f"✏️ Nickname change: {before.nick} ({after.mention}) --> {after.nick}\n"
+            self.memberlog.info(f"Nickname Changed: {before.nick} --> {after.nick} ({after.mention})")
 
         elif before.name != after.name:
-            logmsg = f"✏️ Username change: {before.name}#{before.discriminator} ({after.mention}) --> {after.name}#{after.discriminator}\n"
+            self.memberlog.info(f"Username change: {before.name}#{before.discriminator} --> {after.name}#{after.discriminator} ({after.mention})")
 
-        elif before.avatar_url != after.avatar_url:
-            logmsg = f"✏️ Avatar change: <{before.avatar_url}> ({after.mention}) --> <{after.avatar_url}>\n"
+        ## TODO: Actually write role change logging code
 
         else:
-            logmsg = False  # User changed but no condition exists
-
-        if logmsg:
-            await self.bot.memberlogs_channel.send(logmsg)
+            pass
 
     if enableJoinLogs == True:
         async def on_member_join(self, member):

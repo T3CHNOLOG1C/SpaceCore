@@ -1,6 +1,7 @@
 from discord.ext import commands
 from discord.utils import get
 from discord import Member
+from discord.errors import Forbidden
 
 from addons.utils.logger import Logger
 from botconfig import MuteRole
@@ -8,7 +9,7 @@ from botconfig import MuteRole
 
 class Mute:
     """
-    Warning System
+    Mute System
     """
 
     def __init__(self, bot):
@@ -18,7 +19,7 @@ class Mute:
 
     @commands.has_permissions(manage_roles=True)
     @commands.command()
-    async def mute(self, ctx, member: Member):
+    async def mute(self, ctx, member: Member, *, reason: str=None):
         if member == ctx.message.author:
             self.modlog.info(f"{ctx.message.author.name} tried muting themselfs")
             await ctx.send("You cannot mute yourself")
@@ -45,7 +46,21 @@ class Mute:
             return
 
         await member.add_roles(self.role)
-        self.modlog.info(f"{ctx.message.author.name} muted {member.name}")
+
+        msg = f"You have been muted in {ctx.guild.name}"
+        if reason:
+            msg += f" for the following reason: {reason}"
+
+        try:
+            await member.send(msg)
+        except Forbidden:
+            if not member.bot:
+                await ctx.send("User had DMs disabled")
+        if reason:
+            self.modlog.info(f"{ctx.message.author.name} muted {member.name} for reason: {reason}")
+        else:
+            self.modlog.info(f"{ctx.message.author.name} muted {member.name}")
+        await ctx.send(f"{member} has been muted.")
 
     @commands.has_permissions(manage_roles=True)
     @commands.command()
@@ -71,8 +86,13 @@ class Mute:
             return
 
         await member.remove_roles(self.role)
+        try:
+            await member.send(f"You have been unmuted in {ctx.guild.name}")
+        except Forbidden:
+            if not member.bot:
+                await ctx.send("User had DMs disabled")
         self.modlog.info(f"{ctx.message.author.name} unmuted {member.name}")
-
+        await ctx.send(f"{member} has been unmuted.")
 
 def setup(bot):
     bot.add_cog(Mute(bot))

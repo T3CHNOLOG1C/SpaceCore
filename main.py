@@ -13,7 +13,7 @@ chdir(path)
 
 # import config
 try:
-    from botconfig import (token, prefixes, description, helpDM, OwnerRole, AdminRole,
+    from botconfig import (token, prefixes, description, helpDM, OwnerRole, AdminRole, ModRole,
                            approvalSystemEnabled, approvedRole, addons, messagelogs_channel,
                            memberlogs_channel, modlogs_channel, ignored_people)
 except ImportError:
@@ -42,6 +42,7 @@ async def on_ready():
 
     bot.owner_role = discord.utils.get(guild.roles, name=OwnerRole)
     bot.admin_role = discord.utils.get(guild.roles, name=AdminRole)
+    bot.mod_role = discord.utils.get(guild.roles, name=ModRole)
 
     if approvalSystemEnabled:
         bot.approved_role = discord.utils.get(guild.roles, name=approvedRole)

@@ -40,6 +40,13 @@ class Logger:
         if self.channel:
             ensure_future(self.send(content, type, function, Color.green()))
 
+    def approval(self, content):
+        type = "APPROVAL"
+        function = _getframe(1).f_code.co_name
+        self.write(content, type, function)
+        if self.channel:
+            ensure_future(self.send(content, type, function, Color.blue()))
+
     def warn(self, content):
         type = "WARNING"
         function = _getframe(1).f_code.co_name

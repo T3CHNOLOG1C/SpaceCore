@@ -1,12 +1,16 @@
-from discord import Member, Colour, Embed, errors
+from discord import Member, errors
 from botconfig import approvalSystemEnabled
+from discord.errors import Forbidden
 from discord.ext import commands
+
+from addons.utils.logger import Logger
 
 
 class Approval:
 
     def __init__(self, bot):
         self.bot = bot
+        self.modlog = Logger(__name__, bot.modlogs_channel)
 
     @commands.has_permissions(manage_roles=True)
     @commands.command()
@@ -21,14 +25,13 @@ class Approval:
             await member.add_roles(self.bot.approved_role)
             dm_msg = "You have been approved. Welcome to {}!".format(
                 ctx.guild.name)
-            await self.dm(member, dm_msg)
+            try:
+                await member.send(dm_msg)
+            except Forbidden:
+                if not member.bot:
+                    await ctx.send("User had DMs disabled")
             await ctx.send(":thumbsup: {} has been approved".format(member))
-            emb = Embed(title="Member Approved", colour=Colour.blue())
-            emb.add_field(name="Member:", value=member, inline=True)
-            emb.add_field(
-                name="Mod:", value=ctx.message.author, inline=True)
-            logchannel = self.bot.logs_channel
-            await logchannel.send("", embed=emb)
+            self.modlog.approval(f"{ctx.message.author.name} approved {member.mention} [{member.name}]")
         except errors.Forbidden:
             await ctx.send("💢 I dont have permission to do this.")
 
@@ -43,13 +46,8 @@ class Approval:
 
         try:
             await member.remove_roles(self.bot.approved_role)
-            await ctx.send(":thumbsup: {} has been approved".format(member))
-            emb = Embed(title="Member Unapprove", colour=Colour.blue())
-            emb.add_field(name="Member:", value=member, inline=True)
-            emb.add_field(
-                name="Mod:", value=ctx.message.author, inline=True)
-            logchannel = self.bot.logs_channel
-            await logchannel.send("", embed=emb)
+            await ctx.send(":thumbsdown: {} has been unapproved".format(member))
+            self.modlog.approval(f"{ctx.message.author.name} unapproved {member.mention} [{member.name}]")
         except errors.Forbidden:
             await ctx.send("💢 I dont have permission to do this.")
 
