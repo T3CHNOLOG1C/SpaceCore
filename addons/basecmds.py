@@ -22,7 +22,7 @@ class Basecmds:
     @checks.is_staff()
     async def unload(self, ctx, addon: str):
         """Unloads an addon."""
-        if addon is "basecmds":
+        if addon == "basecmds":
             await ctx.send("Cannot unload base commands")
             return
 

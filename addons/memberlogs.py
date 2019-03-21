@@ -1,5 +1,4 @@
-from discord import TextChannel, Embed, Colour
-from discord.ext import commands
+from discord import Embed, Colour
 from botconfig import enableJoinLogs, enableLeaveLogs
 from addons.utils.logger import Logger
 

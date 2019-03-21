@@ -1,12 +1,11 @@
 from discord.ext import commands
-from discord import Member, Embed, Colour
+from discord import Member, Embed
 from discord.errors import Forbidden
 
 from json import load, dump
 from time import strftime, localtime
 
 from addons.utils.logger import Logger
-from addons.utils.config import Config
 
 
 class Warn:
@@ -124,7 +123,7 @@ class Warn:
     @commands.command(aliases=["unwarn", "delwarn"])
     async def deletewarn(self, ctx, member: Member, number: int):
         author = ctx.message.author
-        if member == ctx.message.author:
+        if member == author:
             await ctx.send("You cannot unwarn yourself")
             return
 
