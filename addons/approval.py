@@ -1,4 +1,4 @@
-from discord import Member, Colour, Embed, errors
+from discord import Member, errors
 from botconfig import approvalSystemEnabled
 from discord.errors import Forbidden
 from discord.ext import commands
