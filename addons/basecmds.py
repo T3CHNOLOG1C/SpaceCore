@@ -1,5 +1,7 @@
+import importlib
 from datetime import datetime
 from traceback import format_exception
+from discord import Embed, Color
 from discord.ext import commands
 from os import execl
 from sys import executable, argv
@@ -7,7 +9,8 @@ from asyncio import sleep
 
 from addons.utils.logger import Logger
 from addons.utils import checks
-
+from addons.utils import checks
+from botconfig import cogs
 
 class Basecmds:
     """
@@ -36,6 +39,20 @@ class Basecmds:
                 format_exception(type(e), e, e.__traceback__))))
             await ctx.send('💢 Error trying to unload the addon:\n```\n{}: {}\n```'.format(type(e).__name__, e))
 
+    @commands.command()
+    @checks.is_staff()
+    async def unloadcog(self, ctx, cog: str):
+        """Unloads an addon."""
+        try:
+            addon = "addons." + addon
+            self.bot.unload_extension(cog)
+            self.modlog.info(cog + " unloaded")
+            await ctx.send('✅ Cog unloaded.')
+        except Exception as e:
+            self.modlog.warn("Failed to load {}: {}".format(addon, "".join(
+                format_exception(type(e), e, e.__traceback__))))
+            await ctx.send('💢 Error trying to unload the addon:\n```\n{}: {}\n```'.format(type(e).__name__, e))
+
     @commands.command(aliases=['reload'])
     @checks.is_staff()
     async def load(self, ctx, addon: str):
@@ -50,6 +67,36 @@ class Basecmds:
             self.modlog.warn("Failed to load {}: {}".format(addon, "".join(
                 format_exception(type(e), e, e.__traceback__))))
             await ctx.send('💢 Failed!\n```\n{}: {}\n```'.format(type(e).__name__, e))
+
+    @commands.command(aliases=['reloadcog'])
+    @checks.is_staff()
+    async def loadcog(self, ctx, cog: str):
+        """(Re)loads a cog."""
+        try:
+            cog = "cogs." + cog
+            self.bot.unload_extension(cog)
+            self.bot.load_extension(cog)
+            self.modlog.info(cog + " loaded")
+            await ctx.send('✅ Cog reloaded.')
+        except Exception as e:
+            self.modlog.warn("Failed to load {}: {}".format(cog, "".join(
+                format_exception(type(e), e, e.__traceback__))))
+            await ctx.send('💢 Failed!\n```\n{}: {}\n```'.format(type(e).__name__, e))
+
+    @commands.command(aliases=['cogs'])
+    async def listcogs(self, ctx):
+        embed = Embed(color=Color.blue())
+        embed.set_author(name="Loaded Cogs:")
+        cogname = ""
+        cogsource = ""
+        coglicense= ""
+        content = ""
+        for X in cogs:
+            cog = importlib.import_module(X)
+            name = "{} \nSource: {}\n".format(cog.cogname, cog.cogsource)
+            content += "License: {}".format(cog.coglicense)
+            embed.add_field(name=name, value=content)
+        await ctx.send("", embed=embed)
 
     @commands.command()
     async def ping(self, ctx):

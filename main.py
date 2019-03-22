@@ -3,6 +3,7 @@ from traceback import format_exception
 from os.path import dirname, realpath
 from os import chdir
 import discord
+from discord import Embed, Colour
 from discord.ext import commands
 
 from addons.utils.logger import Logger
@@ -15,7 +16,7 @@ chdir(path)
 try:
     from botconfig import (token, prefixes, description, helpDM, OwnerRole, AdminRole, ModRole,
                            approvalSystemEnabled, approvedRole, addons, messagelogs_channel,
-                           memberlogs_channel, modlogs_channel, ignored_people)
+                           memberlogs_channel, modlogs_channel, ignored_people, cogs)
 except ImportError:
     print("Bot config does not exist.")
     exit()
@@ -30,6 +31,7 @@ def blacklist(ctx):
         return False
 
     return True
+
 
 
 @bot.event
@@ -58,6 +60,14 @@ async def on_ready():
 
     # Notify user if an addon fails to load.
     for addon in addons:
+        try:
+            bot.load_extension(addon)
+        except Exception as e:
+            logger.warn("Failed to load {}:\n{}".format(addon, "".join(
+                format_exception(type(e), e, e.__traceback__))))
+
+    # Notify user if a cog fails to load.
+    for addon in cogs:
         try:
             bot.load_extension(addon)
         except Exception as e:

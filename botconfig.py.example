@@ -61,6 +61,13 @@ addons = [
     'addons.warn',
 ]
 
+# List of custom cogs to load
+
+cogs = [
+	''
+	#'cogs.cog',
+]
+
 # Name of the channel where changes to users should be logged
 memberlogs_channel = ""
 

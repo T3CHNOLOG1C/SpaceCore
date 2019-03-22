@@ -108,3 +108,4 @@ botconfig.py
 .vs/
 logs/
 data/*.*
+cogs/*.*
