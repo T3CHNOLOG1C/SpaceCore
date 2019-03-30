@@ -9,7 +9,6 @@ from asyncio import sleep
 
 from addons.utils.logger import Logger
 from addons.utils import checks
-from addons.utils import checks
 from botconfig import cogs
 
 class Basecmds:
@@ -44,7 +43,7 @@ class Basecmds:
     async def unloadcog(self, ctx, cog: str):
         """Unloads an addon."""
         try:
-            addon = "addons." + addon
+            addon = "addons." + cog
             self.bot.unload_extension(cog)
             self.modlog.info(cog + " unloaded")
             await ctx.send('✅ Cog unloaded.')
@@ -87,9 +86,7 @@ class Basecmds:
     async def listcogs(self, ctx):
         embed = Embed(color=Color.blue())
         embed.set_author(name="Loaded Cogs:")
-        cogname = ""
-        cogsource = ""
-        coglicense= ""
+
         content = ""
         for X in cogs:
             cog = importlib.import_module(X)
