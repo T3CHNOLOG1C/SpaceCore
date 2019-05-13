@@ -3,7 +3,6 @@ from traceback import format_exception
 from os.path import dirname, realpath
 from os import chdir
 import discord
-from discord import Embed, Colour
 from discord.ext import commands
 
 from addons.utils.logger import Logger
