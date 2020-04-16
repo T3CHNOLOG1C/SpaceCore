@@ -12,21 +12,43 @@ class Memberlogs(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.memberlog = Logger(__name__, bot.memberlogs_channel)
-        
-    async def on_member_update(self, before, after):
 
+
+    @commands.Cog.listener()    
+    async def on_member_update(self, before, after):
         if before.nick != after.nick:
             self.memberlog.info(f"Nickname Changed: {before.nick} --> {after.nick} ({after.mention})")
 
-        elif before.name != after.name:
+        if before.name != after.name:
             self.memberlog.info(f"Username change: {before.name}#{before.discriminator} --> {after.name}#{after.discriminator} ({after.mention})")
 
-        ## TODO: Actually write role change logging code
+        if before.roles != after.roles:
+            before_roles = []
+            after_roles = []
+
+            for role in before.roles:
+                before_roles.append(role.name)
+
+            for role in after.roles:
+                after_roles.append(role.name)
+            
+            if before.roles>after.roles:
+                set_difference = set(after_roles) - set(before_roles)
+                x = set_difference.pop()
+                role_string = "+ " + x
+                self.memberlog.info(f"Change in roles for {after.name}:\n {role_string}")
+            else:
+                set_difference = set(before_roles) - set(after_roles)
+                x = set_difference.pop()
+                role_string = "- " + x
+                self.memberlog.info(f"Change in roles for {after.name}:\n {role_string}")
+                
 
         else:
             pass
 
     if enableJoinLogs == True:
+        @commands.Cog.listener()
         async def on_member_join(self, member):
             emb = Embed(title="Member Joined",
                         colour=Colour.green())
@@ -36,6 +58,7 @@ class Memberlogs(commands.Cog):
             await self.bot.memberlogs_channel.send("", embed=emb)
 
     if enableLeaveLogs == True:
+        @commands.Cog.listener()
         async def on_member_remove(self, member):
             emb = Embed(title="Member Left",
                         colour=Colour.green())
