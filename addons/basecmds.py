@@ -11,7 +11,7 @@ from addons.utils.logger import Logger
 from addons.utils import checks
 from botconfig import cogs
 
-class Basecmds:
+class Basecmds(commands.Cog):
     """
     Base commands
     """
@@ -87,8 +87,9 @@ class Basecmds:
         embed = Embed(color=Color.blue())
         embed.set_author(name="Loaded Cogs:")
         content = ""
-        for X in cogs:
-            cog = importlib.import_module(X)
+        for x in cogs:
+            x = "cogs." + x
+            cog = importlib.import_module(x)
             name = "{} \nSource: {}\n".format(cog.cogname, cog.cogsource)
             content += "License: {}".format(cog.coglicense)
             embed.add_field(name=name, value=content)

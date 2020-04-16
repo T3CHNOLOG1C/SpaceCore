@@ -7,7 +7,7 @@ from addons.utils.logger import Logger
 from botconfig import MuteRole
 
 
-class Mute:
+class Mute(commands.Cog):
     """
     Mute System
     """

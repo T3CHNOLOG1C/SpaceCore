@@ -8,7 +8,7 @@ from time import strftime, localtime
 from addons.utils.logger import Logger
 
 
-class Warn:
+class Warn(commands.Cog):
     """
     Warning system
     """

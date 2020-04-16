@@ -1,6 +1,6 @@
 ################################
 ### Space Core Configuration ###
-############ v1.1.0 ############
+############ v1.2.0 ############
 ################################
 
 # Bot authentication token
@@ -51,22 +51,22 @@ MuteRole = "Muted"
 # List of addons to load
 
 addons = [
-    'addons.approval',
-    'addons.basecmds',
-    'addons.lockdown',
-    'addons.memberlogs',
-    'addons.moderation',
-    'addons.mute',
-    'addons.qrgen',
-    'addons.warn',
+    'approval',
+    'basecmds',
+    'lockdown',
+    'memberlogs',
+    'moderation',
+    'mute',
+    'qrgen',
+    'warn',
 ]
 
 # List of custom cogs to load
 
 cogs = [
-	''
-	#'cogs.cog',
+	#'cog_filename',
 ]
+
 
 # Name of the channel where changes to users should be logged
 memberlogs_channel = ""

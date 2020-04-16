@@ -4,7 +4,7 @@ from discord.ext import commands
 from addons.utils.logger import Logger
 
 
-class Lockdown:
+class Lockdown(commands.Cog):
     """
     Lockdown System
     """

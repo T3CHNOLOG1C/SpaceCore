@@ -1,9 +1,10 @@
 from discord import Embed, Colour
+from discord.ext import commands
 from botconfig import enableJoinLogs, enableLeaveLogs
 from addons.utils.logger import Logger
 
 
-class Memberlogs:
+class Memberlogs(commands.Cog):
     """
     Logs member-related stuff
     """
