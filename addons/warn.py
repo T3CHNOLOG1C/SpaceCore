@@ -28,19 +28,19 @@ class Warn(commands.Cog):
     @commands.command()
     async def warn(self, ctx, member: Member, *, reason: str=""):
         if member == ctx.message.author:
-            await ctx.send("You cannot warn yourself")
+            await ctx.send("You cannot warn yourself!")
             return
 
         elif member == ctx.me:
-            await ctx.send("Unable to warn myself")
+            await ctx.send("I can't warn myself!")
             return
 
         elif self.bot.owner_role in member.roles:
-            await ctx.send("Unable to warn Owner")
+            await ctx.send("I can't warn an owner!")
             return
 
         elif self.bot.admin_role in member.roles and not self.bot.owner_role in ctx.message.author.roles:
-            await ctx.send("Unable to warn Admin")
+            await ctx.send("You can't warn an admin unless you are an owner!")
             return
 
         try:
@@ -78,7 +78,7 @@ class Warn(commands.Cog):
                 await ctx.send("User had DMs disabled")
         await ctx.send(f"🚩 {member} has been warned. This is warning #{amount_of_warns}.")
 
-        self.logger.info(f"{ctx.message.author.name} warned {member.name} for {reason}. (#{amount_of_warns}.")
+        self.logger.info(f"{ctx.message.author.name} warned {member.name} for {reason}. (#{amount_of_warns}).")
 
         if amount_of_warns == 1:
             try:
@@ -120,22 +120,22 @@ class Warn(commands.Cog):
             dump(js, f, sort_keys=True, indent=4, separators=(',', ': '))
 
     @commands.has_permissions(manage_roles=True)
-    @commands.command(aliases=["unwarn", "delwarn"])
+    @commands.command(aliases=["delwarn"])
     async def deletewarn(self, ctx, member: Member, number: int):
         author = ctx.message.author
         if member == author:
-            await ctx.send("You cannot unwarn yourself")
+            await ctx.send("You cannot delete your own warns")
             return
 
         elif self.bot.owner_role in member.roles:
-            await ctx.send("Unable to unwarn Owner")
+            await ctx.send("Can't remove warns from an owner!")
             return
 
         elif self.bot.admin_role in member.roles and not self.bot.owner_role in ctx.message.author.roles:
-            await ctx.send("Unable to unwarn Admin")
+            await ctx.send("You cannot remove warns from an admin unless you are an owner!")
             return
         elif number <= 0:
-            await ctx.send("Warn number has to be a positive number")
+            await ctx.send("Warn number must be a positive number!")
             return
 
         with open("data/warns.json", "r") as f:
@@ -192,7 +192,7 @@ class Warn(commands.Cog):
 
         for nbr, warn in enumerate(js[userid]["warns"]):
             content = "{}".format(warn["reason"])
-            author = await self.bot.get_user_info(warn["author_id"])
+            author = await self.bot.fetch_user(warn["author_id"])
             content += "\n*Warn author : {} ({})*".format(
                 warn["author"], author.mention)
             embed.add_field(name="\n\n#{}: {}".format(nbr + 1, warn["timestamp"]),
